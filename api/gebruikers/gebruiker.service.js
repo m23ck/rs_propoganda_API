@@ -2,7 +2,7 @@ const pool = require("../../config/config");
 
 
 module.exports = {
-    create: (data, callBack)=> {
+    create: (data, callBack) => {
         pool.query(
             `insert into gebruikers(naam, voornaam, adres, telefoonnummer, email, gebruikernaam, wachtwoord, type_id) values(?,?,?,?,?,?,?,?)`,
             [
@@ -16,7 +16,7 @@ module.exports = {
                 data.type_id
             ],
             (error, results, fields) => {
-                if(error){
+                if (error) {
                     return callBack(error)
                 }
                 return callBack(null, results)
@@ -28,7 +28,7 @@ module.exports = {
             `select gebruiker_id, naam, voornaam, adres, telefoonnummer, email, gebruikernaam, wachtwoord, type_id from gebruikers`,
             [],
             (error, results, fields) => {
-                if(error){
+                if (error) {
                     return callBack(error);
                 }
                 return callBack(null, results);
@@ -39,7 +39,7 @@ module.exports = {
         pool.query(`select gebruiker_id, naam, voornaam, adres, telefoonnummer, email, gebruikernaam, wachtwoord, type_id from gebruikers where gebruiker_id = ?`,
             [gebruiker_id],
             (error, results, fields) => {
-                if(error){
+                if (error) {
                     return callBack(error);
                 }
                 return callBack(null, results[0]);
@@ -60,7 +60,7 @@ module.exports = {
                 data.gebruiker_id
             ],
             (error, results, fields) => {
-                if(error){
+                if (error) {
                     return callBack(error);
                 }
                 return callBack(null, results[0]);
@@ -90,6 +90,6 @@ module.exports = {
                 return callBack(null, results[0]);
             }
         );
-        
+
     }
 };
