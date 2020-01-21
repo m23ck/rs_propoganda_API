@@ -4,7 +4,7 @@ const pool = require("../../config/config");
 module.exports = {
     create: (data, callBack)=> {
         pool.query(
-            `insert into gebruikers(naam, voornaam, adres, telefoonnummer, email, gebruikernaam, wachtwoord, type_id) values(?,?,?,?,?,?,?,?)`,
+            'insert into gebruikers(naam, voornaam, adres, telefoonnummer, email, gebruikernaam, wachtwoord, type_id) values(?,?,?,?,?,?,?,?)',
             [
                 data.naam,
                 data.voornaam,
@@ -25,7 +25,7 @@ module.exports = {
     },
     getGebruikers: callBack => {
         pool.query(
-            `select gebruiker_id, naam, voornaam, adres, telefoonnummer, email, gebruikernaam, wachtwoord, type_id from gebruikers`,
+            'select gebruiker_id, naam, voornaam, adres, telefoonnummer, email, gebruikernaam, wachtwoord, type_id from gebruikers',
             [],
             (error, results, fields) => {
                 if(error){
@@ -36,7 +36,7 @@ module.exports = {
         );
     },
     getGebruikerById: (gebruiker_id, callBack) => {
-        pool.query(`select gebruiker_id, naam, voornaam, adres, telefoonnummer, email, gebruikernaam, wachtwoord, type_id from gebruikers where gebruiker_id = ?`,
+        pool.query('select gebruiker_id, naam, voornaam, adres, telefoonnummer, email, gebruikernaam, wachtwoord, type_id from gebruikers where gebruiker_id = ?',
             [gebruiker_id],
             (error, results, fields) => {
                 if(error){
@@ -47,7 +47,7 @@ module.exports = {
         );
     },
     updateGebruiker: (data, callBack) => {
-        pool.query(`update gebruikers set naam = ?, voornaam = ?, adres = ?, telefoonnummer = ?, email = ?, gebruikernaam = ?, wachtwoord = ?, type_id = ? where gebruiker_id = ?`,
+        pool.query('update gebruikers set naam = ?, voornaam = ?, adres = ?, telefoonnummer = ?, email = ?, gebruikernaam = ?, wachtwoord = ?, type_id = ? where gebruiker_id = ?',
             [
                 data.naam,
                 data.voornaam,
@@ -69,7 +69,7 @@ module.exports = {
     },
     deleteGebruiker: (data, callBack) => {
         pool.query(
-            `delete from gebruikers where gebruiker_id = ?`,
+            'delete from gebruikers where gebruiker_id = ?',
             [data.gebruiker_id],
             (error, results, fields) => {
                 if (error) {
@@ -81,7 +81,7 @@ module.exports = {
     },
     getGebruikerByGebruikernaam: (gebruikernaam, callBack) => {
         pool.query(
-            `select * from gebruikers where gebruikernaam = ?`,
+            'select * from gebruikers where gebruikernaam = ?',
             [gebruikernaam],
             (error, results, fields) => {
                 if (error) {

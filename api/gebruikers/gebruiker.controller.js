@@ -27,7 +27,7 @@ module.exports = {
                 success: 1,
                 data: results
             })
-        })
+        });
     },
     getGebruikerById: (req, res) => {
         const gebruiker_id = req.params.gebruiker_id;
