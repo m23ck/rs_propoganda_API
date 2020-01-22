@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Gegenereerd op: 21 jan 2020 om 11:45
+-- Gegenereerd op: 22 jan 2020 om 14:05
 -- Serverversie: 10.4.8-MariaDB
 -- PHP-versie: 7.3.11
 
@@ -21,18 +21,6 @@ SET time_zone = "+00:00";
 --
 -- Database: `rs_propoganda`
 --
-
--- --------------------------------------------------------
-
---
--- Tabelstructuur voor tabel `algemeen`
---
-
-CREATE TABLE `algemeen` (
-  `algemeen_id` int(11) NOT NULL,
-  `vergader_id` int(11) DEFAULT NULL,
-  `commentaar_id` int(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -56,7 +44,8 @@ CREATE TABLE `bericht` (
 CREATE TABLE `commentaar` (
   `commentaar_id` int(11) NOT NULL,
   `commentaar` tinytext NOT NULL,
-  `type` tinyint(1) NOT NULL
+  `type` tinyint(1) NOT NULL,
+  `presentie_id` int(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -77,6 +66,13 @@ CREATE TABLE `gebruikers` (
   `type_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Gegevens worden geëxporteerd voor tabel `gebruikers`
+--
+
+INSERT INTO `gebruikers` (`gebruiker_id`, `naam`, `voornaam`, `adres`, `telefoonnummer`, `email`, `gebruikernaam`, `wachtwoord`, `type_id`) VALUES
+(2, 'Latchmansing', 'Kenson', 'j Lachmonstraat 43', 8674583, 'kLatch@yahoo.com', 'klatch', '$2b$10$KGbS9HMrBsGWCxRwM0UEnu2Wal//tZVltOgg8u9Zomenvi3HphIGK', 3);
+
 -- --------------------------------------------------------
 
 --
@@ -88,8 +84,7 @@ CREATE TABLE `presentie` (
   `naam` varchar(255) DEFAULT NULL,
   `voornaam` varchar(255) DEFAULT NULL,
   `email` varchar(255) DEFAULT NULL,
-  `vergader_id` int(11) DEFAULT NULL,
-  `commentaar_id` int(11) DEFAULT NULL
+  `vergader_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -104,6 +99,13 @@ CREATE TABLE `ressort` (
   `district` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Gegevens worden geëxporteerd voor tabel `ressort`
+--
+
+INSERT INTO `ressort` (`ressort_id`, `ressortnaam`, `district`) VALUES
+(1, 'koewarasan', 'wanica');
+
 -- --------------------------------------------------------
 
 --
@@ -114,6 +116,14 @@ CREATE TABLE `type` (
   `type_id` int(11) NOT NULL,
   `type` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Gegevens worden geëxporteerd voor tabel `type`
+--
+
+INSERT INTO `type` (`type_id`, `type`) VALUES
+(2, 'Administrator'),
+(3, 'admin');
 
 -- --------------------------------------------------------
 
@@ -133,14 +143,6 @@ CREATE TABLE `vergadering` (
 --
 
 --
--- Indexen voor tabel `algemeen`
---
-ALTER TABLE `algemeen`
-  ADD PRIMARY KEY (`algemeen_id`),
-  ADD KEY `vergader_id` (`vergader_id`),
-  ADD KEY `commentaar_id` (`commentaar_id`);
-
---
 -- Indexen voor tabel `bericht`
 --
 ALTER TABLE `bericht`
@@ -151,7 +153,8 @@ ALTER TABLE `bericht`
 -- Indexen voor tabel `commentaar`
 --
 ALTER TABLE `commentaar`
-  ADD PRIMARY KEY (`commentaar_id`);
+  ADD PRIMARY KEY (`commentaar_id`),
+  ADD KEY `presentie_id` (`presentie_id`);
 
 --
 -- Indexen voor tabel `gebruikers`
@@ -166,8 +169,7 @@ ALTER TABLE `gebruikers`
 --
 ALTER TABLE `presentie`
   ADD PRIMARY KEY (`presentie_id`),
-  ADD KEY `vergader_id` (`vergader_id`),
-  ADD KEY `commentaar_id` (`commentaar_id`);
+  ADD KEY `vergader_id` (`vergader_id`);
 
 --
 -- Indexen voor tabel `ressort`
@@ -193,12 +195,6 @@ ALTER TABLE `vergadering`
 --
 
 --
--- AUTO_INCREMENT voor een tabel `algemeen`
---
-ALTER TABLE `algemeen`
-  MODIFY `algemeen_id` int(11) NOT NULL AUTO_INCREMENT;
-
---
 -- AUTO_INCREMENT voor een tabel `bericht`
 --
 ALTER TABLE `bericht`
@@ -214,7 +210,7 @@ ALTER TABLE `commentaar`
 -- AUTO_INCREMENT voor een tabel `gebruikers`
 --
 ALTER TABLE `gebruikers`
-  MODIFY `gebruiker_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `gebruiker_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT voor een tabel `presentie`
@@ -226,13 +222,13 @@ ALTER TABLE `presentie`
 -- AUTO_INCREMENT voor een tabel `ressort`
 --
 ALTER TABLE `ressort`
-  MODIFY `ressort_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `ressort_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT voor een tabel `type`
 --
 ALTER TABLE `type`
-  MODIFY `type_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `type_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT voor een tabel `vergadering`
@@ -245,17 +241,16 @@ ALTER TABLE `vergadering`
 --
 
 --
--- Beperkingen voor tabel `algemeen`
---
-ALTER TABLE `algemeen`
-  ADD CONSTRAINT `algemeen_ibfk_1` FOREIGN KEY (`vergader_id`) REFERENCES `vergadering` (`vergader_id`),
-  ADD CONSTRAINT `algemeen_ibfk_2` FOREIGN KEY (`commentaar_id`) REFERENCES `commentaar` (`commentaar_id`);
-
---
 -- Beperkingen voor tabel `bericht`
 --
 ALTER TABLE `bericht`
   ADD CONSTRAINT `bericht_ibfk_1` FOREIGN KEY (`gebruiker_id`) REFERENCES `gebruikers` (`gebruiker_id`);
+
+--
+-- Beperkingen voor tabel `commentaar`
+--
+ALTER TABLE `commentaar`
+  ADD CONSTRAINT `commentaar_ibfk_2` FOREIGN KEY (`presentie_id`) REFERENCES `presentie` (`presentie_id`);
 
 --
 -- Beperkingen voor tabel `gebruikers`
@@ -267,8 +262,7 @@ ALTER TABLE `gebruikers`
 -- Beperkingen voor tabel `presentie`
 --
 ALTER TABLE `presentie`
-  ADD CONSTRAINT `presentie_ibfk_1` FOREIGN KEY (`vergader_id`) REFERENCES `vergadering` (`vergader_id`),
-  ADD CONSTRAINT `presentie_ibfk_2` FOREIGN KEY (`commentaar_id`) REFERENCES `commentaar` (`commentaar_id`);
+  ADD CONSTRAINT `presentie_ibfk_1` FOREIGN KEY (`vergader_id`) REFERENCES `vergadering` (`vergader_id`);
 
 --
 -- Beperkingen voor tabel `vergadering`
