@@ -1,4 +1,4 @@
-const { 
+const {
     createType,
     getTypeById,
     getTypes,

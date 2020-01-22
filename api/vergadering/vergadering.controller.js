@@ -1,13 +1,13 @@
 const {
     create,
-    getPresentieById,
-    getPresenties,
-    updatePresentie,
-    deletePresentie
-} = require("./presentie.service");
+    getVergaderingById,
+    getVergadering,
+    updateVergadering,
+    deleteVergadering
+} = require("./vergadering.service");
 
 module.exports = {
-    createPresentie: (req, res) => {
+    createVergadering: (req, res) => {
         const body = req.body;
         create(body, (err, results) => {
             if (err) {
@@ -23,9 +23,9 @@ module.exports = {
             })
         })
     },
-    getPresentieById: (req, res) => {
-        const presentie_id = req.params.presentie_id;
-        getPresentieById(presentie_id, (err, results) => {
+    getVergaderingById: (req, res) => {
+        const vergader_id = req.params.vergader_id;
+        getVergaderingById(vergader_id, (err, results) => {
             if (err) {
                 console.log(err);
                 return;
@@ -42,8 +42,8 @@ module.exports = {
             });
         });
     },
-    getPresenties: (req, res) => {
-        getPresenties((err, results) => {
+    getVergadering: (req, res) => {
+        getVergadering((err, results) => {
             if (err) {
                 console.log(err);
                 return;
@@ -60,9 +60,9 @@ module.exports = {
             });
         });
     },
-    updatePresentie: (req, res) => {
+    updateVergadering: (req, res) => {
         const body = req.body;
-        updatePresentie(body, (err, results) => {
+        updateVergadering(body, (err, results) => {
             if (err) {
                 console.log(err);
                 return;
@@ -79,9 +79,9 @@ module.exports = {
             });
         });
     },
-    deletePresentie: (req, res) => {
+    deleteVergadering: (req, res) => {
         const data = req.body;
-        deletePresentie(data, (err, results) => {
+        deleteVergadering(data, (err, results) => {
             if (err) {
                 console.log(err);
                 return;

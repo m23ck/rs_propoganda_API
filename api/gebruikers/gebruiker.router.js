@@ -9,12 +9,11 @@ const {
 const router = require("express").Router();
 const { checkToken } = require("../../auth/token_validation");
 
-// router.post("/", checkToken, createGebruiker);
-router.post("/", createGebruiker);
+router.post("/", checkToken, createGebruiker);
 router.get("/", checkToken, getGebruikers);
 router.get("/:gebruiker_id", checkToken, getGebruikerById);
 router.patch("/", checkToken, updateGebruiker);
 router.delete("/", checkToken, deleteGebruiker);
-router.post('login', login);
+router.post('/login', login);
 
 module.exports = router;

@@ -1,14 +1,15 @@
 const {
     create,
-    getPresentieById,
-    getPresenties,
-    updatePresentie,
-    deletePresentie
-} = require("./presentie.service");
+    getBerichtById,
+    getBericht,
+    updateBericht,
+    deleteBericht
+} = require("./bericht.service");
 
 module.exports = {
-    createPresentie: (req, res) => {
+    createBericht: (req, res) => {
         const body = req.body;
+
         create(body, (err, results) => {
             if (err) {
                 console.log(err);
@@ -23,9 +24,9 @@ module.exports = {
             })
         })
     },
-    getPresentieById: (req, res) => {
-        const presentie_id = req.params.presentie_id;
-        getPresentieById(presentie_id, (err, results) => {
+    getBerichtById: (req, res) => {
+        const bericht_id = req.params.bericht_id;
+        getBerichtById(bericht_id, (err, results) => {
             if (err) {
                 console.log(err);
                 return;
@@ -42,8 +43,8 @@ module.exports = {
             });
         });
     },
-    getPresenties: (req, res) => {
-        getPresenties((err, results) => {
+    getBericht: (req, res) => {
+        getBericht((err, results) => {
             if (err) {
                 console.log(err);
                 return;
@@ -60,9 +61,9 @@ module.exports = {
             });
         });
     },
-    updatePresentie: (req, res) => {
+    updateBericht: (req, res) => {
         const body = req.body;
-        updatePresentie(body, (err, results) => {
+        updateBericht(body, (err, results) => {
             if (err) {
                 console.log(err);
                 return;
@@ -79,9 +80,9 @@ module.exports = {
             });
         });
     },
-    deletePresentie: (req, res) => {
+    deleteBericht: (req, res) => {
         const data = req.body;
-        deletePresentie(data, (err, results) => {
+        deleteBericht(data, (err, results) => {
             if (err) {
                 console.log(err);
                 return;
@@ -94,7 +95,7 @@ module.exports = {
             }
             return res.json({
                 success: 1,
-                message: "Presentie succesvol verwijderd"
+                message: "Type succesvol verwijderd"
             });
         });
     }
