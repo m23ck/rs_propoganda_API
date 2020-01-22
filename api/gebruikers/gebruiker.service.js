@@ -67,10 +67,10 @@ module.exports = {
             }
         );
     },
-    deleteGebruiker: (data, callBack) => {
+    deleteGebruiker: (gebruiker_id, callBack) => {
         pool.query(
             'delete from gebruikers where gebruiker_id = ?',
-            [data.gebruiker_id],
+            [gebruiker_id],
             (error, results, fields) => {
                 if (error) {
                     return callBack(error);
