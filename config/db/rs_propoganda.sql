@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.9.1
+-- version 4.8.3
 -- https://www.phpmyadmin.net/
 --
--- Host: localhost
--- Gegenereerd op: 21 jan 2020 om 11:45
--- Serverversie: 10.4.8-MariaDB
--- PHP-versie: 7.3.11
+-- Host: 127.0.0.1
+-- Generation Time: Jan 24, 2020 at 02:21 AM
+-- Server version: 10.1.36-MariaDB
+-- PHP Version: 5.6.38
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -25,44 +25,33 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Tabelstructuur voor tabel `algemeen`
---
-
-CREATE TABLE `algemeen` (
-  `algemeen_id` int(11) NOT NULL,
-  `vergader_id` int(11) DEFAULT NULL,
-  `commentaar_id` int(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
--- --------------------------------------------------------
-
---
--- Tabelstructuur voor tabel `bericht`
+-- Table structure for table `bericht`
 --
 
 CREATE TABLE `bericht` (
   `bericht_id` int(11) NOT NULL,
-  `bericht` text DEFAULT NULL,
-  `datum` datetime DEFAULT current_timestamp(),
-  `gebruiker_id` int(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `gebruiker_id` int(11) DEFAULT NULL,
+  `bericht` varchar(255) DEFAULT NULL,
+  `datum` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
 --
--- Tabelstructuur voor tabel `commentaar`
+-- Table structure for table `commentaar`
 --
 
 CREATE TABLE `commentaar` (
   `commentaar_id` int(11) NOT NULL,
-  `commentaar` tinytext NOT NULL,
-  `type` tinyint(1) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `presentie_id` int(11) DEFAULT NULL,
+  `commentaar` tinytext,
+  `type` tinyint(4) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
 --
--- Tabelstructuur voor tabel `gebruikers`
+-- Table structure for table `gebruikers`
 --
 
 CREATE TABLE `gebruikers` (
@@ -70,91 +59,83 @@ CREATE TABLE `gebruikers` (
   `naam` varchar(255) NOT NULL,
   `voornaam` varchar(255) NOT NULL,
   `adres` varchar(255) NOT NULL,
-  `telefoonnummer` int(11) NOT NULL,
+  `telefoonnummer` int(12) NOT NULL,
   `email` varchar(255) NOT NULL,
   `gebruikernaam` varchar(255) NOT NULL,
   `wachtwoord` varchar(255) NOT NULL,
   `type_id` int(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
 --
--- Tabelstructuur voor tabel `presentie`
+-- Table structure for table `presentie`
 --
 
 CREATE TABLE `presentie` (
   `presentie_id` int(11) NOT NULL,
+  `vergader_id` int(11) DEFAULT NULL,
   `naam` varchar(255) DEFAULT NULL,
   `voornaam` varchar(255) DEFAULT NULL,
-  `email` varchar(255) DEFAULT NULL,
-  `vergader_id` int(11) DEFAULT NULL,
-  `commentaar_id` int(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `email` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
 --
--- Tabelstructuur voor tabel `ressort`
+-- Table structure for table `ressort`
 --
 
 CREATE TABLE `ressort` (
   `ressort_id` int(11) NOT NULL,
   `ressortnaam` varchar(255) NOT NULL,
   `district` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
 --
--- Tabelstructuur voor tabel `type`
+-- Table structure for table `type`
 --
 
 CREATE TABLE `type` (
   `type_id` int(11) NOT NULL,
-  `type` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `type` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
 --
--- Tabelstructuur voor tabel `vergadering`
+-- Table structure for table `vergadering`
 --
 
 CREATE TABLE `vergadering` (
   `vergader_id` int(11) NOT NULL,
   `ressort_id` int(11) DEFAULT NULL,
   `datum` date NOT NULL,
-  `sprekers` tinytext NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `sprekers` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Indexen voor geëxporteerde tabellen
+-- Indexes for dumped tables
 --
 
 --
--- Indexen voor tabel `algemeen`
---
-ALTER TABLE `algemeen`
-  ADD PRIMARY KEY (`algemeen_id`),
-  ADD KEY `vergader_id` (`vergader_id`),
-  ADD KEY `commentaar_id` (`commentaar_id`);
-
---
--- Indexen voor tabel `bericht`
+-- Indexes for table `bericht`
 --
 ALTER TABLE `bericht`
   ADD PRIMARY KEY (`bericht_id`),
   ADD KEY `gebruiker_id` (`gebruiker_id`);
 
 --
--- Indexen voor tabel `commentaar`
+-- Indexes for table `commentaar`
 --
 ALTER TABLE `commentaar`
-  ADD PRIMARY KEY (`commentaar_id`);
+  ADD PRIMARY KEY (`commentaar_id`),
+  ADD KEY `presentie_id` (`presentie_id`);
 
 --
--- Indexen voor tabel `gebruikers`
+-- Indexes for table `gebruikers`
 --
 ALTER TABLE `gebruikers`
   ADD PRIMARY KEY (`gebruiker_id`),
@@ -162,116 +143,107 @@ ALTER TABLE `gebruikers`
   ADD KEY `type_id` (`type_id`);
 
 --
--- Indexen voor tabel `presentie`
+-- Indexes for table `presentie`
 --
 ALTER TABLE `presentie`
   ADD PRIMARY KEY (`presentie_id`),
-  ADD KEY `vergader_id` (`vergader_id`),
-  ADD KEY `commentaar_id` (`commentaar_id`);
+  ADD KEY `vergader_id` (`vergader_id`);
 
 --
--- Indexen voor tabel `ressort`
+-- Indexes for table `ressort`
 --
 ALTER TABLE `ressort`
   ADD PRIMARY KEY (`ressort_id`);
 
 --
--- Indexen voor tabel `type`
+-- Indexes for table `type`
 --
 ALTER TABLE `type`
   ADD PRIMARY KEY (`type_id`);
 
 --
--- Indexen voor tabel `vergadering`
+-- Indexes for table `vergadering`
 --
 ALTER TABLE `vergadering`
   ADD PRIMARY KEY (`vergader_id`),
   ADD KEY `ressort_id` (`ressort_id`);
 
 --
--- AUTO_INCREMENT voor geëxporteerde tabellen
+-- AUTO_INCREMENT for dumped tables
 --
 
 --
--- AUTO_INCREMENT voor een tabel `algemeen`
---
-ALTER TABLE `algemeen`
-  MODIFY `algemeen_id` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT voor een tabel `bericht`
+-- AUTO_INCREMENT for table `bericht`
 --
 ALTER TABLE `bericht`
   MODIFY `bericht_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT voor een tabel `commentaar`
+-- AUTO_INCREMENT for table `commentaar`
 --
 ALTER TABLE `commentaar`
   MODIFY `commentaar_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT voor een tabel `gebruikers`
+-- AUTO_INCREMENT for table `gebruikers`
 --
 ALTER TABLE `gebruikers`
   MODIFY `gebruiker_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT voor een tabel `presentie`
+-- AUTO_INCREMENT for table `presentie`
 --
 ALTER TABLE `presentie`
   MODIFY `presentie_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT voor een tabel `ressort`
+-- AUTO_INCREMENT for table `ressort`
 --
 ALTER TABLE `ressort`
   MODIFY `ressort_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT voor een tabel `type`
+-- AUTO_INCREMENT for table `type`
 --
 ALTER TABLE `type`
   MODIFY `type_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT voor een tabel `vergadering`
+-- AUTO_INCREMENT for table `vergadering`
 --
 ALTER TABLE `vergadering`
   MODIFY `vergader_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- Beperkingen voor geëxporteerde tabellen
+-- Constraints for dumped tables
 --
 
 --
--- Beperkingen voor tabel `algemeen`
---
-ALTER TABLE `algemeen`
-  ADD CONSTRAINT `algemeen_ibfk_1` FOREIGN KEY (`vergader_id`) REFERENCES `vergadering` (`vergader_id`),
-  ADD CONSTRAINT `algemeen_ibfk_2` FOREIGN KEY (`commentaar_id`) REFERENCES `commentaar` (`commentaar_id`);
-
---
--- Beperkingen voor tabel `bericht`
+-- Constraints for table `bericht`
 --
 ALTER TABLE `bericht`
   ADD CONSTRAINT `bericht_ibfk_1` FOREIGN KEY (`gebruiker_id`) REFERENCES `gebruikers` (`gebruiker_id`);
 
 --
--- Beperkingen voor tabel `gebruikers`
+-- Constraints for table `commentaar`
+--
+ALTER TABLE `commentaar`
+  ADD CONSTRAINT `commentaar_ibfk_1` FOREIGN KEY (`presentie_id`) REFERENCES `presentie` (`presentie_id`);
+
+--
+-- Constraints for table `gebruikers`
 --
 ALTER TABLE `gebruikers`
   ADD CONSTRAINT `gebruikers_ibfk_1` FOREIGN KEY (`type_id`) REFERENCES `type` (`type_id`);
 
 --
--- Beperkingen voor tabel `presentie`
+-- Constraints for table `presentie`
 --
 ALTER TABLE `presentie`
-  ADD CONSTRAINT `presentie_ibfk_1` FOREIGN KEY (`vergader_id`) REFERENCES `vergadering` (`vergader_id`),
-  ADD CONSTRAINT `presentie_ibfk_2` FOREIGN KEY (`commentaar_id`) REFERENCES `commentaar` (`commentaar_id`);
+  ADD CONSTRAINT `presentie_ibfk_1` FOREIGN KEY (`vergader_id`) REFERENCES `vergadering` (`vergader_id`);
 
 --
--- Beperkingen voor tabel `vergadering`
+-- Constraints for table `vergadering`
 --
 ALTER TABLE `vergadering`
   ADD CONSTRAINT `vergadering_ibfk_1` FOREIGN KEY (`ressort_id`) REFERENCES `ressort` (`ressort_id`);
