@@ -40,12 +40,12 @@ module.exports = {
       }
     );
   },
-  updateBericht: (data, callBack) => {
+  updateBericht: (bericht_id, bericht, callBack) => {
     pool.query(
-      `update bericht set bericht = ?, datum = ? where bericht_id = ?`,
+      `update bericht set bericht = ? where bericht_id = ?`,
       [
-        data.bericht,
-        data.datum
+        bericht_id,
+        bericht
       ],
       (error, results, fields) => {
         if (error) {
@@ -55,10 +55,10 @@ module.exports = {
       }
     );
   },
-  deleteBericht: (data, callBack) => {
+  deleteBericht: (bericht_id, callBack) => {
     pool.query(
       `delete from bericht where bericht_id = ?`,
-      [data.bericht_id],
+      [bericht_id],
       (error, results, fields) => {
         if (error) {
           return callBack(error);

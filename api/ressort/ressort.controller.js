@@ -1,17 +1,17 @@
-const { 
+const {
     create,
     getRessortById,
     getRessorts,
     updateRessort,
-    deleteRessort  
+    deleteRessort
 } = require("./ressort.service");
 
 module.exports = {
-    createRessort: (req, res)=>{
+    createRessort: (req, res) => {
         const body = req.body;
-        
-        create(body, (err, results) =>{
-            if(err){
+
+        create(body, (err, results) => {
+            if (err) {
                 console.log(err);
                 return res.status(500).json({
                     success: 0,
@@ -40,7 +40,7 @@ module.exports = {
             return res.json({
                 success: 1,
                 data: results
-            }); 
+            });
         });
     },
     getRessorts: (req, res) => {
@@ -58,12 +58,12 @@ module.exports = {
             return res.json({
                 success: 1,
                 data: results
-            }); 
+            });
         });
     },
     updateRessort: (req, res) => {
         const body = req.body;
-        
+
         updateRessort(body, (err, results) => {
             if (err) {
                 console.log(err);
@@ -78,12 +78,12 @@ module.exports = {
             return res.json({
                 success: 1,
                 message: "update Succesvol!"
-            }); 
+            });
         });
     },
     deleteRessort: (req, res) => {
-        const data = req.body;
-        deleteRessort(data, (err, results) => {
+        const ressort_id = req.params.ressort_id;
+        getRessortById(ressort_id, (err, results) => {
             if (err) {
                 console.log(err);
                 return;
@@ -91,13 +91,20 @@ module.exports = {
             if (!results) {
                 return res.json({
                     success: 0,
-                    message: "Record niet gevonden!"
+                    message: "Ressort niet gevonden!"
+                });
+            } else {
+                deleteRessort(ressort_id, (err) => {
+                    if (err) {
+                        console.log(err);
+                        return;
+                    }
+                    return res.json({
+                        success: 1,
+                        message: "Ressort succesvol verwijderd"
+                    });
                 });
             }
-            return res.json({
-                success: 1,
-                message: "Ressort succesvol verwijderd"
-            }); 
         });
     }
 }

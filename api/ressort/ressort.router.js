@@ -1,4 +1,4 @@
-const { 
+const {
     createRessort,
     getRessortById,
     getRessorts,
@@ -12,6 +12,6 @@ router.post("/", checkToken, createRessort);
 router.get("/", checkToken, getRessorts);
 router.get("/:ressort_id", checkToken, getRessortById);
 router.patch("/", checkToken, updateRessort);
-router.delete("/", checkToken, deleteRessort);
+router.delete("/:ressort_id", checkToken, deleteRessort);
 
 module.exports = router;

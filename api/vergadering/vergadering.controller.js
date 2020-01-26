@@ -80,22 +80,29 @@ module.exports = {
         });
     },
     deleteVergadering: (req, res) => {
-        const data = req.body;
-        deleteVergadering(data, (err, results) => {
+        const vergader_id = req.params.vergader_id;
+        getVergaderingById(vergader_id, (err, results) => {
             if (err) {
                 console.log(err);
                 return;
             }
             if (!results) {
-                return res.json({
+                return res.status(404).json({
                     success: 0,
                     message: "Record niet gevonden!"
                 });
+            } else {
+                deleteVergadering(vergader_id, (err) => {
+                    if (err) {
+                        console.log(err);
+                        return;
+                    }
+                    return res.json({
+                        success: 1,
+                        message: "Presentie succesvol verwijderd"
+                    });
+                });
             }
-            return res.json({
-                success: 1,
-                message: "Presentie succesvol verwijderd"
-            });
         });
     }
 }

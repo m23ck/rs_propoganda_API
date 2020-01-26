@@ -80,22 +80,29 @@ module.exports = {
         });
     },
     deletePresentie: (req, res) => {
-        const data = req.body;
-        deletePresentie(data, (err, results) => {
+        const presentie_id = req.params.presentie_id;
+        getPresentieById(presentie_id, (err, results) => {
             if (err) {
                 console.log(err);
                 return;
             }
             if (!results) {
-                return res.json({
+                return res.status(404).json({
                     success: 0,
-                    message: "Record niet gevonden!"
+                    message: "Presentie niet gevonden!"
                 });
+            } else {
+                deletePresentie(presentie_id, (err) => {
+                    if (err) {
+                        console.log(err);
+                        return;
+                    }
+                    return res.status().json({
+                        success: 1,
+                        message: "Presentie succesvol verwijderd!"
+                    });
+                })
             }
-            return res.json({
-                success: 1,
-                message: "Presentie succesvol verwijderd"
-            });
         });
     }
 }

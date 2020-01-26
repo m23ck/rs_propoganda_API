@@ -57,10 +57,10 @@ module.exports = {
             }
         );
     },
-    deleteVergadering: (data, callBack) => {
+    deleteVergadering: (vergader_id, callBack) => {
         pool.query(
             `delete from vergadering where vergader_id = ?`,
-            [data.vergader_id],
+            [vergader_id],
             (error, results, fields) => {
                 if (error) {
                     return callBack(error);

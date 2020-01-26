@@ -2,7 +2,7 @@ const pool = require("../../config/config");
 
 
 module.exports = {
-    create: (data, callBack)=> {
+    create: (data, callBack) => {
         pool.query(
             `insert into ressort(ressortnaam, district) values(?,?)`,
             [
@@ -10,7 +10,7 @@ module.exports = {
                 data.district
             ],
             (error, results, fields) => {
-                if(error){
+                if (error) {
                     return callBack(error)
                 }
                 return callBack(null, results)
@@ -22,7 +22,7 @@ module.exports = {
             `select ressort_id, ressortnaam, district from ressort`,
             [],
             (error, results, fields) => {
-                if(error){
+                if (error) {
                     return callBack(error);
                 }
                 return callBack(null, results);
@@ -33,7 +33,7 @@ module.exports = {
         pool.query(`select ressort_id, ressortnaam, district from ressort where ressort_id = ?`,
             [ressort_id],
             (error, results, fields) => {
-                if(error){
+                if (error) {
                     return callBack(error);
                 }
                 return callBack(null, results[0]);
@@ -48,17 +48,17 @@ module.exports = {
                 data.ressort_id
             ],
             (error, results, fields) => {
-                if(error){
+                if (error) {
                     return callBack(error);
                 }
                 return callBack(null, results[0]);
             }
         );
     },
-    deleteRessort: (data, callBack) => {
+    deleteRessort: (ressort_id, callBack) => {
         pool.query(
             `delete from ressort where ressort_id = ?`,
-            [data.ressort_id],
+            [ressort_id],
             (error, results, fields) => {
                 if (error) {
                     return callBack(error);

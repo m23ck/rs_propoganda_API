@@ -3,21 +3,21 @@ const { verify } = require("jsonwebtoken");
 module.exports = {
     checkToken: (req, res, next) => {
         let token = req.get("authorization");
-        if(token){
+        if (token) {
             token = token.slice(7);
             verify(token, process.env.KEY, (err, decoded) => {
                 if (err) {
-                    res.json({
+                    res.status(401).json({
                         success: 0,
                         message: "Invalide Token!"
                     });
-                }else {
+                } else {
                     next();
                 }
             });
 
-        }else{
-            res.json({
+        } else {
+            res.status(403).json({
                 success: 0,
                 message: "Toegang geweigerd!"
             });

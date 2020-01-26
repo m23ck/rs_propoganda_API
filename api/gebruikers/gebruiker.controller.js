@@ -1,22 +1,22 @@
-const { 
+const {
     create,
     getGebruikerById,
     getGebruikers,
     updateGebruiker,
     deleteGebruiker,
-    getGebruikerByGebruikernaam    
+    getGebruikerByGebruikernaam
 } = require("./gebruiker.service");
 
-const { genSaltSync, hashSync, compareSync  } = require("bcrypt");
+const { genSaltSync, hashSync, compareSync } = require("bcrypt");
 const { sign } = require("jsonwebtoken");
 
 module.exports = {
-    createGebruiker: (req, res)=>{
+    createGebruiker: (req, res) => {
         const body = req.body;
         const salt = genSaltSync(10);
         body.wachtwoord = hashSync(body.wachtwoord, salt);
-        create(body, (err, results) =>{
-            if(err){
+        create(body, (err, results) => {
+            if (err) {
                 console.log(err);
                 return res.status(500).json({
                     success: 0,
@@ -37,15 +37,15 @@ module.exports = {
                 return;
             }
             if (!results) {
-                return res.json({
+                return res.status(404).json({
                     succes: 0,
                     message: "Record niet gevonden!"
                 });
             }
-            return res.json({
+            return res.status(200).json({
                 success: 1,
                 data: results
-            }); 
+            });
         });
     },
     getGebruikers: (req, res) => {
@@ -63,7 +63,7 @@ module.exports = {
             return res.json({
                 success: 1,
                 data: results
-            }); 
+            });
         });
     },
     updateGebruiker: (req, res) => {
@@ -76,44 +76,67 @@ module.exports = {
                 return;
             }
             if (!results) {
-                return res.json({
+                return res.status(503).json({
                     success: 0,
                     message: "Er is een fout opgetreden bij het updaten!"
                 });
             }
-            return res.json({
+            return res.status(200).json({
                 success: 1,
                 message: "update Succesvol!"
-            }); 
+            });
         });
     },
     deleteGebruiker: (req, res) => {
-        const data = req.body;
-        deleteGebruiker(data, (err, results) => {
+        const data = req.params.gebruiker_id;
+        getGebruikerById(data, (err, result) => {
             if (err) {
                 console.log(err);
                 return;
             }
-            if (!results) {
-                return res.json({
+            if (!result) {
+                return res.status(404).json({
                     success: 0,
-                    message: "Record niet gevonden!"
+                    message: "Gebruiker niet gevonden!"
+                });
+            } else {
+                deleteGebruiker(data, (err) => {
+                    if (err) {
+                        console.log(err);
+                        return;
+                    }
+                    return res.status(200).json({
+                        success: 1,
+                        message: "Gebruiker succesvol verwijderd!"
+                    });
                 });
             }
-            return res.json({
-                success: 1,
-                message: "Gebruiker succesvol verwijderd"
-            }); 
         });
+        // deleteGebruiker(data, (err, results) => {
+        //     if (err) {
+        //         console.log(err);
+        //         return;
+        //     }
+        //     if (!results) {
+        //         return res.status(404).json({
+        //             success: 0,
+        //             message: "Record niet gevonden!"
+        //         });
+        //     }
+        //     return res.status(200).json({
+        //         success: 1,
+        //         message: "Gebruiker succesvol verwijderd"
+        //     });
+        // });
     },
     login: (req, res) => {
         const body = req.body;
         getGebruikerByGebruikernaam(body.gebruikernaam, (err, results) => {
-            if(err) {
+            if (err) {
                 console.log(err);
             }
             if (!results) {
-                return res.json({
+                return res.status(401).json({
                     success: 0,
                     data: "gebruikersnaam of wachtwoord onjuist!"
                 });
@@ -122,16 +145,16 @@ module.exports = {
             // incase theres an error when testing this moet je ipv results.wachtwoord: results[0].wachtwoord schrijven
             if (result) {
                 results.wachtwoord = undefined;
-                const jsonToken = sign({ result: results}, process.env.KEY, {
+                const jsonToken = sign({ result: results }, process.env.KEY, {
                     expiresIn: "1h"
                 });
-                return res.json({
+                return res.status(200).json({
                     success: 1,
                     message: "Login Succesvol",
                     token: jsonToken
                 });
             } else {
-                return res.json({
+                return res.status(401).json({
                     success: 0,
                     data: "gebruikersnaam of wachtwoord onjuist!"
                 });

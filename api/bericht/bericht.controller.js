@@ -32,12 +32,12 @@ module.exports = {
                 return;
             }
             if (!results) {
-                return res.json({
+                return res.status(404).json({
                     succes: 0,
                     message: "Record niet gevonden!"
                 });
             }
-            return res.json({
+            return res.status(200).json({
                 success: 1,
                 data: results
             });
@@ -61,42 +61,76 @@ module.exports = {
             });
         });
     },
+    // updateBericht: (req, res) => {
+    //     const data = req.body;
+    //     updateBericht(body, (err, results) => {
+    //         if (err) {
+    //             console.log(err);
+    //             return;
+    //         }
+    //         if (!results) {
+    //             return res.status(503).json({
+    //                 success: 0,
+    //                 message: "Er is een fout opgetreden bij het updaten!"
+    //             });
+    //         }
+    //         return res.status(200).json({
+    //             success: 1,
+    //             message: "update Succesvol!"
+    //         });
+    //     });
+    // },
     updateBericht: (req, res) => {
-        const body = req.body;
-        updateBericht(body, (err, results) => {
+        const bericht = req.body.bericht;
+        const bericht_id = req.params.bericht_id;
+        getBerichtById(bericht_id, (err, result) => {
             if (err) {
                 console.log(err);
                 return;
             }
-            if (!results) {
-                return res.json({
+            if (!result) {
+                return res.status(404).json({
                     success: 0,
-                    message: "Er is een fout opgetreden bij het updaten!"
+                    message: "Record niet gevonden"
+                });
+            } else {
+                updateBericht(bericht, (err) => {
+                    if (err) {
+                        console.log(err);
+                        return;
+                    }
+                    return res.status(200).json({
+                        success: 1,
+                        message: "Update bericht succesvol!"
+                    });
                 });
             }
-            return res.json({
-                success: 1,
-                message: "update Succesvol!"
-            });
         });
     },
     deleteBericht: (req, res) => {
-        const data = req.body;
-        deleteBericht(data, (err, results) => {
+        const bericht_id = req.params.bericht_id;
+        getBerichtById(bericht_id, (err, result) => {
             if (err) {
                 console.log(err);
                 return;
             }
-            if (!results) {
-                return res.json({
+            if (!result) {
+                return res.status(404).json({
                     success: 0,
-                    message: "Record niet gevonden!"
+                    message: "Bericht niet gevonden"
+                });
+            } else {
+                deleteBericht(bericht_id, (err) => {
+                    if (err) {
+                        console.log(err);
+                        return;
+                    }
+                    return res.status(200).json({
+                        success: 1,
+                        message: "Bericht succesvol verwijderd!"
+                    });
                 });
             }
-            return res.json({
-                success: 1,
-                message: "Type succesvol verwijderd"
-            });
         });
     }
 }
