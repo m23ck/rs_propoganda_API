@@ -18,7 +18,7 @@ module.exports = {
   },
   getBericht: callBack => {
     pool.query(
-      `select bericht_id, bericht, datum, gebruiker_id from bericht`,
+      `select * from bericht inner join gebruikers on bericht.gebruiker_id=gebruikers.gebruiker_id`,
       [],
       (error, results, fields) => {
         if (error) {
@@ -30,7 +30,7 @@ module.exports = {
   },
   getBerichtById: (bericht_id, callBack) => {
     pool.query(
-      `select bericht_id, bericht, datum, gebruiker_id from bericht where bericht_id = ?`,
+      `select * from bericht inner join gebruikers on bericht.gebruiker_id=gebruikers.gebruiker_id where bericht_id = ?`,
       [bericht_id],
       (error, results, fields) => {
         if (error) {

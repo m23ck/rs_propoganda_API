@@ -20,7 +20,7 @@ module.exports = {
     },
     getVergadering: callBack => {
         pool.query(
-            `select vergader_id, ressort_id, datum, sprekers from vergadering`,
+            `select * from vergadering inner join ressort on vergadering.ressort_id=ressort.ressort_id`,
             [],
             (error, results, fields) => {
                 if (error) {
@@ -31,7 +31,7 @@ module.exports = {
         );
     },
     getVergaderingById: (vergader_id, callBack) => {
-        pool.query(`select vergader_id, ressort_id, datum, sprekers from vergadering where vergader_id = ?`,
+        pool.query(`select * from vergadering inner join ressort on vergadering.ressort_id=ressort.ressort_id where vergader_id = ?`,
             [vergader_id],
             (error, results, fields) => {
                 if (error) {

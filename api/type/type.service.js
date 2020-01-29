@@ -15,7 +15,7 @@ module.exports = {
   },
   getTypes: callBack => {
     pool.query(
-      `select type_id, type from type`,
+      `select * from type`,
       [],
       (error, results, fields) => {
         if (error) {
@@ -27,7 +27,7 @@ module.exports = {
   },
   getTypeById: (type_id, callBack) => {
     pool.query(
-      `select type_id, type from type where type_id = ?`,
+      `select * from type where type_id = ?`,
       [type_id],
       (error, results, fields) => {
         if (error) {

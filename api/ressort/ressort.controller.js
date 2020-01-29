@@ -62,24 +62,47 @@ module.exports = {
         });
     },
     updateRessort: (req, res) => {
-        const body = req.body;
-
-        updateRessort(body, (err, results) => {
+        const data = req.body;
+        const ressort_id = req.params.ressort_id;
+        getRessortById(ressort_id, (err, result) => {
             if (err) {
                 console.log(err);
                 return;
             }
-            if (!results) {
-                return res.json({
+            if (!result) {
+                return res.status(404).json({
                     success: 0,
-                    message: "Er is een fout opgetreden bij het updaten!"
+                    message: "Ressort niet gevonden!"
+                });
+            } else {
+                updateRessort(data, (err) => {
+                    if (err) {
+                        console.log(err);
+                        return;
+                    }
+                    return res.status(200).json({
+                        success: 1,
+                        message: "Ressort update succesvol!"
+                    });
                 });
             }
-            return res.json({
-                success: 1,
-                message: "update Succesvol!"
-            });
         });
+        // updateRessort(data, (err, results) => {
+        //     if (err) {
+        //         console.log(err);
+        //         return;
+        //     }
+        //     if (!results) {
+        //         return res.json({
+        //             success: 0,
+        //             message: "Er is een fout opgetreden bij het updaten!"
+        //         });
+        //     }
+        //     return res.json({
+        //         success: 1,
+        //         message: "update Succesvol!"
+        //     });
+        // });
     },
     deleteRessort: (req, res) => {
         const ressort_id = req.params.ressort_id;

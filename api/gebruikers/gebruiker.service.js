@@ -25,7 +25,7 @@ module.exports = {
     },
     getGebruikers: callBack => {
         pool.query(
-            `select gebruiker_id, naam, voornaam, adres, telefoonnummer, email, gebruikernaam, wachtwoord, type_id from gebruikers`,
+            `select * from gebruikers inner join type on gebruikers.type_id=type.type_id`,
             [],
             (error, results, fields) => {
                 if (error) {
@@ -36,7 +36,7 @@ module.exports = {
         );
     },
     getGebruikerById: (gebruiker_id, callBack) => {
-        pool.query(`select gebruiker_id, naam, voornaam, adres, telefoonnummer, email, gebruikernaam, wachtwoord, type_id from gebruikers where gebruiker_id = ?`,
+        pool.query(`select * from gebruikers inner join type on gebruikers.type_id=type.type_id where gebruiker_id = ?`,
             [gebruiker_id],
             (error, results, fields) => {
                 if (error) {

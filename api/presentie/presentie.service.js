@@ -9,8 +9,7 @@ module.exports = {
                 data.naam,
                 data.voornaam,
                 data.email,
-                data.vergader_id,
-                data.commentaar_id
+                data.vergader_id
             ],
             (error, results, fields) => {
                 if (error) {
@@ -22,7 +21,7 @@ module.exports = {
     },
     getPresenties: callBack => {
         pool.query(
-            `select presentie_id, naam, voornaam, email, vergader_id from presentie`,
+            `select * from presentie inner join vergadering on presentie.vergader_id=vergadering.vergader_id inner join ressort on vergadering.ressort_id=ressort.ressort_id`,
             [],
             (error, results, fields) => {
                 if (error) {
@@ -33,7 +32,7 @@ module.exports = {
         );
     },
     getPresentieById: (presentie_id, callBack) => {
-        pool.query(`select presentie_id, naam, voornaam, email, vergader_id from presentie where presentie_id = ?`,
+        pool.query(`select * from presentie inner join vergadering on presentie.vergader_id=vergadering.vergader_id inner join ressort on vergadering.ressort_id=ressort.ressort_id where presentie_id = ?`,
             [presentie_id],
             (error, results, fields) => {
                 if (error) {
@@ -49,8 +48,7 @@ module.exports = {
                 data.naam,
                 data.voornaam,
                 data.email,
-                data.vergader_id,
-                data.commentaar_id
+                data.vergader_id
             ],
             (error, results, fields) => {
                 if (error) {

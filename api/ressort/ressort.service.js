@@ -19,7 +19,7 @@ module.exports = {
     },
     getRessorts: callBack => {
         pool.query(
-            `select ressort_id, ressortnaam, district from ressort`,
+            `select * from ressort`,
             [],
             (error, results, fields) => {
                 if (error) {
@@ -30,7 +30,7 @@ module.exports = {
         );
     },
     getRessortById: (ressort_id, callBack) => {
-        pool.query(`select ressort_id, ressortnaam, district from ressort where ressort_id = ?`,
+        pool.query(`select * from ressort where ressort_id = ?`,
             [ressort_id],
             (error, results, fields) => {
                 if (error) {
@@ -40,12 +40,12 @@ module.exports = {
             }
         );
     },
-    updateRessort: (data, callBack) => {
+    updateRessort: (data, ressort_id, callBack) => {
         pool.query(`update ressort set ressortnaam = ?, district = ? where ressort_id = ?`,
             [
                 data.ressortnaam,
                 data.district,
-                data.ressort_id
+                ressort_id
             ],
             (error, results, fields) => {
                 if (error) {
