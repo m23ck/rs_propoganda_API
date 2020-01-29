@@ -1,17 +1,17 @@
-const { 
+const {
     create,
     getTypeById,
     getTypes,
     updateType,
-    deleteType   
+    deleteType
 } = require("./type.service");
 
 module.exports = {
-    createType: (req, res)=>{
+    createType: (req, res) => {
         const body = req.body;
-        
-        create(body, (err, results) =>{
-            if(err){
+
+        create(body, (err, results) => {
+            if (err) {
                 console.log(err);
                 return res.status(500).json({
                     success: 0,
@@ -40,7 +40,7 @@ module.exports = {
             return res.json({
                 success: 1,
                 data: results
-            }); 
+            });
         });
     },
     getTypes: (req, res) => {
@@ -50,15 +50,15 @@ module.exports = {
                 return;
             }
             if (!results) {
-                return res.json({
+                return res.status(204).json({
                     success: 0,
                     message: "Op dit moment is er niet genoeg data om op te halen"
                 });
             }
-            return res.json({
+            return res.status(200).json({
                 success: 1,
                 data: results
-            }); 
+            });
         });
     },
     updateType: (req, res) => {
@@ -77,26 +77,33 @@ module.exports = {
             return res.json({
                 success: 1,
                 message: "update Succesvol!"
-            }); 
+            });
         });
     },
     deleteType: (req, res) => {
-        const data = req.body;
-        deleteType(data, (err, results) => {
+        const type_id = req.params.type_id;
+        getTypeById(type_id, (err, results) => {
             if (err) {
                 console.log(err);
                 return;
             }
             if (!results) {
-                return res.json({
+                return res.status(404).json({
                     success: 0,
                     message: "Record niet gevonden!"
                 });
+            } else {
+                deleteType(type_id, (err) => {
+                    if (err) {
+                        console.log(err);
+                        return;
+                    }
+                    return res.status(200).json({
+                        success: 1,
+                        message: "Type succesvol verwijderd"
+                    });
+                });
             }
-            return res.json({
-                success: 1,
-                message: "Type succesvol verwijderd"
-            }); 
         });
     }
 }

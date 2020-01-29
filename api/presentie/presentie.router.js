@@ -1,4 +1,4 @@
-const { 
+const {
     createPresentie,
     getPresentieById,
     getPresenties,
@@ -12,6 +12,6 @@ router.post("/", checkToken, createPresentie);
 router.get("/", checkToken, getPresenties);
 router.get("/:presentie_id", checkToken, getPresentieById);
 router.patch("/", checkToken, updatePresentie);
-router.delete("/", checkToken, deletePresentie);
+router.delete("/:presentie_id", checkToken, deletePresentie);
 
 module.exports = router;

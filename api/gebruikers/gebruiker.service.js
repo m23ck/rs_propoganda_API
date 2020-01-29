@@ -2,7 +2,7 @@ const pool = require("../../config/config");
 
 
 module.exports = {
-    create: (data, callBack)=> {
+    create: (data, callBack) => {
         pool.query(
             'insert into gebruikers(naam, voornaam, adres, telefoonnummer, email, gebruikernaam, wachtwoord, type_id) values(?,?,?,?,?,?,?,?)',
             [
@@ -16,7 +16,7 @@ module.exports = {
                 data.type_id
             ],
             (error, results, fields) => {
-                if(error){
+                if (error) {
                     return callBack(error)
                 }
                 return callBack(null, results)
@@ -25,10 +25,10 @@ module.exports = {
     },
     getGebruikers: callBack => {
         pool.query(
-            'select gebruiker_id, naam, voornaam, adres, telefoonnummer, email, gebruikernaam, wachtwoord, type_id from gebruikers',
+            `select * from gebruikers inner join type on gebruikers.type_id=type.type_id`,
             [],
             (error, results, fields) => {
-                if(error){
+                if (error) {
                     return callBack(error);
                 }
                 return callBack(null, results);
@@ -36,10 +36,10 @@ module.exports = {
         );
     },
     getGebruikerById: (gebruiker_id, callBack) => {
-        pool.query('select gebruiker_id, naam, voornaam, adres, telefoonnummer, email, gebruikernaam, wachtwoord, type_id from gebruikers where gebruiker_id = ?',
+        pool.query(`select * from gebruikers inner join type on gebruikers.type_id=type.type_id where gebruiker_id = ?`,
             [gebruiker_id],
             (error, results, fields) => {
-                if(error){
+                if (error) {
                     return callBack(error);
                 }
                 return callBack(null, results[0]);
@@ -60,7 +60,7 @@ module.exports = {
                 data.gebruiker_id
             ],
             (error, results, fields) => {
-                if(error){
+                if (error) {
                     return callBack(error);
                 }
                 return callBack(null, results[0]);
@@ -69,7 +69,7 @@ module.exports = {
     },
     deleteGebruiker: (gebruiker_id, callBack) => {
         pool.query(
-            'delete from gebruikers where gebruiker_id = ?',
+            `delete from gebruikers where gebruiker_id = ?`,
             [gebruiker_id],
             (error, results, fields) => {
                 if (error) {
@@ -90,6 +90,6 @@ module.exports = {
                 return callBack(null, results[0]);
             }
         );
-        
+
     }
 };

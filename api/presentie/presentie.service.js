@@ -2,18 +2,17 @@ const pool = require("../../config/config");
 
 
 module.exports = {
-    create: (data, callBack)=> {
+    create: (data, callBack) => {
         pool.query(
-            `insert into presentie(naam, voornaam, email, vergader_id, commentaar_id) values(?,?,?,?,?)`,
+            `insert into presentie(naam, voornaam, email, vergader_id) values(?,?,?,?)`,
             [
                 data.naam,
                 data.voornaam,
                 data.email,
-                data.vergader_id,
-                data.commentaar_id
+                data.vergader_id
             ],
             (error, results, fields) => {
-                if(error){
+                if (error) {
                     return callBack(error)
                 }
                 return callBack(null, results)
@@ -22,10 +21,10 @@ module.exports = {
     },
     getPresenties: callBack => {
         pool.query(
-            `select presentie_id, naam, voornaam, email, vergader_id, commentaar_id from presentie`,
+            `select * from presentie inner join vergadering on presentie.vergader_id=vergadering.vergader_id inner join ressort on vergadering.ressort_id=ressort.ressort_id`,
             [],
             (error, results, fields) => {
-                if(error){
+                if (error) {
                     return callBack(error);
                 }
                 return callBack(null, results);
@@ -33,10 +32,10 @@ module.exports = {
         );
     },
     getPresentieById: (presentie_id, callBack) => {
-        pool.query(`select presentie_id, naam, voornaam, email, vergader_id, commentaar_id from presentie where presentie_id = ?`,
+        pool.query(`select * from presentie inner join vergadering on presentie.vergader_id=vergadering.vergader_id inner join ressort on vergadering.ressort_id=ressort.ressort_id where presentie_id = ?`,
             [presentie_id],
             (error, results, fields) => {
-                if(error){
+                if (error) {
                     return callBack(error);
                 }
                 return callBack(null, results[0]);
@@ -44,26 +43,25 @@ module.exports = {
         );
     },
     updatePresentie: (data, callBack) => {
-        pool.query(`update presentie set naam = ?, voornaam = ?, email = ?, vergader_id = ?, commentaar_id = ? where presentie_id = ?`,
+        pool.query(`update presentie set naam = ?, voornaam = ?, email = ?, vergader_id = ? where presentie_id = ?`,
             [
                 data.naam,
                 data.voornaam,
                 data.email,
-                data.vergader_id,
-                data.commentaar_id
+                data.vergader_id
             ],
             (error, results, fields) => {
-                if(error){
+                if (error) {
                     return callBack(error);
                 }
                 return callBack(null, results[0]);
             }
         );
     },
-    deletePresentie: (data, callBack) => {
+    deletePresentie: (presentie_id, callBack) => {
         pool.query(
             `delete from presentie where presentie_id = ?`,
-            [data.presentie_id],
+            [presentie_id],
             (error, results, fields) => {
                 if (error) {
                     return callBack(error);

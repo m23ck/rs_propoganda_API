@@ -1,16 +1,16 @@
-const { 
+const {
     create,
     getPresentieById,
     getPresenties,
     updatePresentie,
-    deletePresentie  
+    deletePresentie
 } = require("./presentie.service");
 
 module.exports = {
-    createPresentie: (req, res)=>{
+    createPresentie: (req, res) => {
         const body = req.body;
-        create(body, (err, results) =>{
-            if(err){
+        create(body, (err, results) => {
+            if (err) {
                 console.log(err);
                 return res.status(500).json({
                     success: 0,
@@ -39,7 +39,7 @@ module.exports = {
             return res.json({
                 success: 1,
                 data: results
-            }); 
+            });
         });
     },
     getPresenties: (req, res) => {
@@ -49,20 +49,19 @@ module.exports = {
                 return;
             }
             if (!results) {
-                return res.json({
+                return res.status(204).json({
                     success: 0,
                     message: "Op dit moment is er niet genoeg data om op te halen"
                 });
             }
-            return res.json({
+            return res.status(200).json({
                 success: 1,
                 data: results
-            }); 
+            });
         });
     },
     updatePresentie: (req, res) => {
         const body = req.body;
-       
         updatePresentie(body, (err, results) => {
             if (err) {
                 console.log(err);
@@ -77,26 +76,33 @@ module.exports = {
             return res.json({
                 success: 1,
                 message: "update Succesvol!"
-            }); 
+            });
         });
     },
     deletePresentie: (req, res) => {
-        const data = req.body;
-        deletePresentie(data, (err, results) => {
+        const presentie_id = req.params.presentie_id;
+        getPresentieById(presentie_id, (err, results) => {
             if (err) {
                 console.log(err);
                 return;
             }
             if (!results) {
-                return res.json({
+                return res.status(404).json({
                     success: 0,
-                    message: "Record niet gevonden!"
+                    message: "Presentie niet gevonden!"
                 });
+            } else {
+                deletePresentie(presentie_id, (err) => {
+                    if (err) {
+                        console.log(err);
+                        return;
+                    }
+                    return res.status().json({
+                        success: 1,
+                        message: "Presentie succesvol verwijderd!"
+                    });
+                })
             }
-            return res.json({
-                success: 1,
-                message: "Presentie succesvol verwijderd"
-            }); 
         });
     }
 }

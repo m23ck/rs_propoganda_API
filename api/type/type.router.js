@@ -1,4 +1,4 @@
-const { 
+const {
     createType,
     getTypeById,
     getTypes,
@@ -11,8 +11,8 @@ const { checkToken } = require("../../auth/token_validation");
 // router.post("/", checkToken, createType);
 router.post("/", createType);
 router.get("/", checkToken, getTypes);
-router.get("/:gebruiker_id", checkToken, getTypeById);
+router.get("/:type_id", checkToken, getTypeById);
 router.patch("/", checkToken, updateType);
-router.delete("/", checkToken, deleteType);
+router.delete("/:type_id", checkToken, deleteType);
 
 module.exports = router;

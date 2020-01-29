@@ -15,7 +15,7 @@ module.exports = {
   },
   getTypes: callBack => {
     pool.query(
-      'select type_id, type from type',
+      `select * from type`,
       [],
       (error, results, fields) => {
         if (error) {
@@ -27,7 +27,7 @@ module.exports = {
   },
   getTypeById: (type_id, callBack) => {
     pool.query(
-      'select type_id, type from type where id = ?',
+      `select * from type where type_id = ?`,
       [type_id],
       (error, results, fields) => {
         if (error) {
@@ -41,9 +41,9 @@ module.exports = {
     pool.query(
       'update type set type = ? where type_id = ?',
       [
-          data.type, 
-          data.type_id
-        ],
+        data.type,
+        data.type_id
+      ],
       (error, results, fields) => {
         if (error) {
           return callBack(error);
@@ -52,10 +52,10 @@ module.exports = {
       }
     );
   },
-  deleteType: (data, callBack) => {
+  deleteType: (type_id, callBack) => {
     pool.query(
-      'delete from type where type_id = ?',
-      [data.type_id],
+      `delete from type where type_id = ?`,
+      [type_id],
       (error, results, fields) => {
         if (error) {
           return callBack(error);
