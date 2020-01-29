@@ -68,12 +68,12 @@ module.exports = {
                 return;
             }
             if (!results) {
-                return res.json({
+                return res.status(204).json({
                     success: 0,
                     message: "Er is een fout opgetreden bij het updaten!"
                 });
             }
-            return res.json({
+            return res.status(200).json({
                 success: 1,
                 message: "update Succesvol!"
             });

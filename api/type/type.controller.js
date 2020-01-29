@@ -50,12 +50,12 @@ module.exports = {
                 return;
             }
             if (!results) {
-                return res.json({
+                return res.status(204).json({
                     success: 0,
                     message: "Op dit moment is er niet genoeg data om op te halen"
                 });
             }
-            return res.json({
+            return res.status(200).json({
                 success: 1,
                 data: results
             });

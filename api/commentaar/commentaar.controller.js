@@ -1,13 +1,13 @@
 const {
     create,
-    getPresentieById,
-    getPresenties,
-    updatePresentie,
-    deletePresentie
-} = require("./presentie.service");
+    getCommentaarById,
+    getCommentaar,
+    updateCommentaar,
+    deleteCommentaar
+} = require("./commentaar.service");
 
 module.exports = {
-    createPresentie: (req, res) => {
+    createCommentaar: (req, res) => {
         const body = req.body;
         create(body, (err, results) => {
             if (err) {
@@ -23,27 +23,27 @@ module.exports = {
             })
         })
     },
-    getPresentieById: (req, res) => {
-        const presentie_id = req.params.presentie_id;
-        getPresentieById(presentie_id, (err, results) => {
+    getCommentaarById: (req, res) => {
+        const commentaar_id = req.params.commentaar_id;
+        getCommentaarById(commentaar_id, (err, results) => {
             if (err) {
                 console.log(err);
                 return;
             }
             if (!results) {
-                return res.json({
+                return res.status(404).json({
                     succes: 0,
                     message: "Record niet gevonden!"
                 });
             }
-            return res.json({
+            return res.status(200).json({
                 success: 1,
                 data: results
             });
         });
     },
-    getPresenties: (req, res) => {
-        getPresenties((err, results) => {
+    getCommentaar: (req, res) => {
+        getCommentaar((err, results) => {
             if (err) {
                 console.log(err);
                 return;
@@ -60,9 +60,9 @@ module.exports = {
             });
         });
     },
-    updatePresentie: (req, res) => {
+    updateCommentaar: (req, res) => {
         const body = req.body;
-        updatePresentie(body, (err, results) => {
+        updateCommentaar(body, (err, results) => {
             if (err) {
                 console.log(err);
                 return;
@@ -79,9 +79,9 @@ module.exports = {
             });
         });
     },
-    deletePresentie: (req, res) => {
-        const presentie_id = req.params.presentie_id;
-        getPresentieById(presentie_id, (err, results) => {
+    deleteCommentaar: (req, res) => {
+        const commentaar_id = req.params.commentaar_id;
+        getCommentaarById(commentaar_id, (err, results) => {
             if (err) {
                 console.log(err);
                 return;
@@ -89,19 +89,19 @@ module.exports = {
             if (!results) {
                 return res.status(404).json({
                     success: 0,
-                    message: "Presentie niet gevonden!"
+                    message: "Record niet gevonden!"
                 });
             } else {
-                deletePresentie(presentie_id, (err) => {
+                deleteCommentaar(commentaar_id, (err) => {
                     if (err) {
                         console.log(err);
                         return;
                     }
-                    return res.status().json({
+                    return res.json({
                         success: 1,
-                        message: "Presentie succesvol verwijderd!"
+                        message: "Presentie succesvol verwijderd"
                     });
-                })
+                });
             }
         });
     }

@@ -10,6 +10,7 @@ const ressortRouter = require("./api/ressort/ressort.router");
 const presentieRouter = require("./api/presentie/presentie.router");
 const berichtRouter = require("./api/bericht/bericht.router");
 const vergaderingRouter = require("./api/vergadering/vergadering.router");
+const commentaarRouter = require("./api/commentaar/commentaar.router");
 
 
 app.use(morgan("dev"));
@@ -23,6 +24,7 @@ app.use("/api/ressort", ressortRouter);
 app.use("/api/presentie", presentieRouter);
 app.use("/api/bericht", berichtRouter);
 app.use("/api/vergadering", vergaderingRouter);
+app.use("/api/commentaar", commentaarRouter);
 
 
 
