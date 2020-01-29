@@ -70,22 +70,42 @@ module.exports = {
         const body = req.body;
         const salt = genSaltSync(10);
         body.wachtwoord = hashSync(body.wachtwoord, salt);
-        updateGebruiker(body, (err, results) => {
+
+        const data = req.params.gebruiker_id;
+        getGebruikerById(data, (err, result) => {
             if (err) {
                 console.log(err);
                 return;
             }
-            if (!results) {
-                return res.status(503).json({
+            if (!result) {
+                return res.status(404).json({
                     success: 0,
-                    message: "Er is een fout opgetreden bij het updaten!"
+                    message: "Gebruiker niet gevonden!"
+                });
+            } else {
+                updateGebruiker(body, (err, results) => {
+                    if (err) {
+                        console.log(err);
+                        return;
+                    }
+                    if (!results) {
+                        return res.status(503).json({
+                            success: 0,
+                            message: "Er is een fout opgetreden bij het updaten!"
+                        });
+                        
+                    }
+
+                    
+                    return res.status(200).json({
+                        success: 1,
+                        message: "update Succesvol!"
+                    });
                 });
             }
-            return res.status(200).json({
-                success: 1,
-                message: "update Succesvol!"
-            });
         });
+
+        
     },
     deleteGebruiker: (req, res) => {
         const data = req.params.gebruiker_id;
@@ -112,22 +132,7 @@ module.exports = {
                 });
             }
         });
-        // deleteGebruiker(data, (err, results) => {
-        //     if (err) {
-        //         console.log(err);
-        //         return;
-        //     }
-        //     if (!results) {
-        //         return res.status(404).json({
-        //             success: 0,
-        //             message: "Record niet gevonden!"
-        //         });
-        //     }
-        //     return res.status(200).json({
-        //         success: 1,
-        //         message: "Gebruiker succesvol verwijderd"
-        //     });
-        // });
+       
     },
     login: (req, res) => {
         const body = req.body;
