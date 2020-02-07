@@ -14,10 +14,15 @@ const vergaderingRouter = require("./api/vergadering/vergadering.router");
 const commentaarRouter = require("./api/commentaar/commentaar.router");
 
 //Remove when in production
-
+app.use(cors({
+    credentials: true,
+    origin: true
+}));
 app.use(morgan("dev"));
 app.use(express.json());
 app.use(bodyParser.json());
+
+
 
 app.use("/api/gebruikers", gebruikerRouter);
 app.use("/api/type", typeRouter);
@@ -32,3 +37,11 @@ app.use("/api/commentaar", commentaarRouter);
 app.listen(process.env.APP_PORT, () => {
     console.log("Server running on port", process.env.APP_PORT);
 })
+
+
+//When route does not exist, show the requester this message
+app.get('*', (req, res) => {
+    res.json({
+        message: "Welcome to the RSP API"
+    });
+});

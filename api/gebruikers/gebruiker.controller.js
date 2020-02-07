@@ -151,7 +151,7 @@ module.exports = {
             if (result) {
                 results.wachtwoord = undefined;
                 const jsonToken = sign({ result: results }, process.env.KEY, {
-                    expiresIn: "1h"
+                    expiresIn: "3h"
                 });
                 return res.status(200).json({
                     success: 1,
