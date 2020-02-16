@@ -40,12 +40,12 @@ module.exports = {
       }
     );
   },
-  updateBericht: (bericht_id, bericht, callBack) => {
+  updateBericht: (bericht, bericht_id, callBack) => {
     pool.query(
       `update bericht set bericht = ? where bericht_id = ?`,
       [
-        bericht_id,
-        bericht
+        bericht,
+        bericht_id
       ],
       (error, results, fields) => {
         if (error) {

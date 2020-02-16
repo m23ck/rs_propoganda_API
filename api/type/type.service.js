@@ -37,12 +37,12 @@ module.exports = {
       }
     );
   },
-  updateType: (data, callBack) => {
+  updateType: (data, type_id, callBack) => {
     pool.query(
       'update type set type = ? where type_id = ?',
       [
         data.type,
-        data.type_id
+        type_id
       ],
       (error, results, fields) => {
         if (error) {

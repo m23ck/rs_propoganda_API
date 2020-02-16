@@ -61,25 +61,6 @@ module.exports = {
             });
         });
     },
-    // updateBericht: (req, res) => {
-    //     const data = req.body;
-    //     updateBericht(body, (err, results) => {
-    //         if (err) {
-    //             console.log(err);
-    //             return;
-    //         }
-    //         if (!results) {
-    //             return res.status(503).json({
-    //                 success: 0,
-    //                 message: "Er is een fout opgetreden bij het updaten!"
-    //             });
-    //         }
-    //         return res.status(200).json({
-    //             success: 1,
-    //             message: "update Succesvol!"
-    //         });
-    //     });
-    // },
     updateBericht: (req, res) => {
         const bericht = req.body.bericht;
         const bericht_id = req.params.bericht_id;
@@ -94,7 +75,7 @@ module.exports = {
                     message: "Record niet gevonden"
                 });
             } else {
-                updateBericht(bericht, (err) => {
+                updateBericht(bericht, bericht_id, (err) => {
                     if (err) {
                         console.log(err);
                         return;

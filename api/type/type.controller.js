@@ -63,22 +63,32 @@ module.exports = {
     },
     updateType: (req, res) => {
         const body = req.body;
-        updateType(body, (err, results) => {
+        const type_id = req.params.type_id;
+        getTypeById(type_id, (err, results) => {
             if (err) {
                 console.log(err);
                 return;
             }
             if (!results) {
                 return res.json({
-                    success: 0,
-                    message: "Er is een fout opgetreden bij het updaten!"
+                    succes: 0,
+                    message: "type bestaat niet!"
+                });
+            } else {
+                updateType(body, type_id, (err) => {
+                    if (err) {
+                        console.log(err);
+                        return;
+                    }
+                    return res.status(200).json({
+                        success: 1,
+                        message: "update Succesvol!"
+                    });
                 });
             }
-            return res.json({
-                success: 1,
-                message: "update Succesvol!"
-            });
         });
+
+
     },
     deleteType: (req, res) => {
         const type_id = req.params.type_id;
