@@ -41,12 +41,13 @@ module.exports = {
             }
         );
     },
-    updateCommentaar: (data, callBack) => {
+    updateCommentaar: (data, commentaar_id, callBack) => {
         pool.query(`update commentaar set presentie_id = ?, commentaar = ?, type = ? where commentaar_id = ?`,
             [
                 data.presentie_id,
                 data.commentaar,
-                data.type
+                data.type,
+                commentaar_id
             ],
             (error, results, fields) => {
                 if (error) {

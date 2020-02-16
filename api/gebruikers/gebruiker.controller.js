@@ -7,8 +7,14 @@ const {
     getGebruikerByGebruikernaam
 } = require("./gebruiker.service");
 
-const { genSaltSync, hashSync, compareSync } = require("bcrypt");
-const { sign } = require("jsonwebtoken");
+const {
+    genSaltSync,
+    hashSync,
+    compareSync
+} = require("bcrypt");
+const {
+    sign
+} = require("jsonwebtoken");
 
 module.exports = {
     createGebruiker: (req, res) => {
@@ -70,9 +76,8 @@ module.exports = {
         const body = req.body;
         const salt = genSaltSync(10);
         body.wachtwoord = hashSync(body.wachtwoord, salt);
-
-        const data = req.params.gebruiker_id;
-        getGebruikerById(data, (err, result) => {
+        const gebruiker_id = req.params.gebruiker_id;
+        getGebruikerById(gebruiker_id, (err, result) => {
             if (err) {
                 console.log(err);
                 return;
@@ -80,23 +85,14 @@ module.exports = {
             if (!result) {
                 return res.status(404).json({
                     success: 0,
-                    message: "Gebruiker niet gevonden!"
+                    message: "Gebruiker bestaat niet!"
                 });
             } else {
-                updateGebruiker(body, (err, results) => {
+                updateGebruiker(body, gebruiker_id, (err, results) => {
                     if (err) {
                         console.log(err);
                         return;
                     }
-                    if (!results) {
-                        return res.status(503).json({
-                            success: 0,
-                            message: "Er is een fout opgetreden bij het updaten!"
-                        });
-                        
-                    }
-
-                    
                     return res.status(200).json({
                         success: 1,
                         message: "update Succesvol!"
@@ -105,7 +101,7 @@ module.exports = {
             }
         });
 
-        
+
     },
     deleteGebruiker: (req, res) => {
         const data = req.params.gebruiker_id;
@@ -132,7 +128,7 @@ module.exports = {
                 });
             }
         });
-       
+
     },
     login: (req, res) => {
         const body = req.body;
@@ -150,7 +146,9 @@ module.exports = {
             // incase theres an error when testing this moet je ipv results.wachtwoord: results[0].wachtwoord schrijven
             if (result) {
                 results.wachtwoord = undefined;
-                const jsonToken = sign({ result: results }, process.env.KEY, {
+                const jsonToken = sign({
+                    result: results
+                }, process.env.KEY, {
                     expiresIn: "3h"
                 });
                 return res.status(200).json({

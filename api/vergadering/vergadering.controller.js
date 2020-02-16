@@ -62,21 +62,29 @@ module.exports = {
     },
     updateVergadering: (req, res) => {
         const body = req.body;
-        updateVergadering(body, (err, results) => {
+        const vergader_id = req.params.vergader_id;
+        getVergaderingById(vergader_id, (err, results) => {
             if (err) {
                 console.log(err);
                 return;
             }
             if (!results) {
-                return res.status(204).json({
+                return res.status(404).json({
                     success: 0,
-                    message: "Er is een fout opgetreden bij het updaten!"
+                    message: "vergadering bestaat niet!"
+                });
+            } else {
+                updateVergadering(body, vergader_id, (err, results) => {
+                    if (err) {
+                        console.log(err);
+                        return;
+                    }
+                    return res.status(200).json({
+                        success: 1,
+                        message: "update Succesvol!"
+                    });
                 });
             }
-            return res.status(200).json({
-                success: 1,
-                message: "update Succesvol!"
-            });
         });
     },
     deleteVergadering: (req, res) => {

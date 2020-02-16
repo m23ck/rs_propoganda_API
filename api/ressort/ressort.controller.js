@@ -72,17 +72,17 @@ module.exports = {
             if (!result) {
                 return res.status(404).json({
                     success: 0,
-                    message: "Ressort niet gevonden!"
+                    message: "Ressort bestaat niet!"
                 });
             } else {
-                updateRessort(data, (err) => {
+                updateRessort(data, ressort_id, (err) => {
                     if (err) {
                         console.log(err);
                         return;
                     }
                     return res.status(200).json({
                         success: 1,
-                        message: "Ressort update succesvol!"
+                        message: "update succesvol!"
                     });
                 });
             }

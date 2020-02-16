@@ -62,21 +62,29 @@ module.exports = {
     },
     updatePresentie: (req, res) => {
         const body = req.body;
-        updatePresentie(body, (err, results) => {
+        const presentie_id = req.params.presentie_id;
+        getPresentieById(presentie_id, (err, results) => {
             if (err) {
                 console.log(err);
                 return;
             }
             if (!results) {
-                return res.json({
+                return res.status(404).json({
                     success: 0,
-                    message: "Er is een fout opgetreden bij het updaten!"
+                    message: "Presentie bestaat niet!"
+                });
+            } else {
+                updatePresentie(body, presentie_id, (err, results) => {
+                    if (err) {
+                        console.log(err);
+                        return;
+                    }
+                    return res.json({
+                        success: 1,
+                        message: "update Succesvol!"
+                    });
                 });
             }
-            return res.json({
-                success: 1,
-                message: "update Succesvol!"
-            });
         });
     },
     deletePresentie: (req, res) => {

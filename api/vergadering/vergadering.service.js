@@ -41,13 +41,14 @@ module.exports = {
             }
         );
     },
-    updateVergadering: (data, callBack) => {
+    updateVergadering: (data, vergader_id, callBack) => {
         pool.query(`update vergadering set ressort_id = ?, datum = ?, sprekers = ? where vergader_id = ?`,
             [
-                data.vergader_id,
+                
                 data.ressort_id,
                 data.datum,
                 data.sprekers,
+                vergader_id
             ],
             (error, results, fields) => {
                 if (error) {

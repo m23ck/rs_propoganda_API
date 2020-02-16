@@ -42,13 +42,14 @@ module.exports = {
             }
         );
     },
-    updatePresentie: (data, callBack) => {
+    updatePresentie: (data, presentie_id, callBack) => {
         pool.query(`update presentie set naam = ?, voornaam = ?, email = ?, vergader_id = ? where presentie_id = ?`,
             [
                 data.naam,
                 data.voornaam,
                 data.email,
-                data.vergader_id
+                data.vergader_id,
+                presentie_id
             ],
             (error, results, fields) => {
                 if (error) {

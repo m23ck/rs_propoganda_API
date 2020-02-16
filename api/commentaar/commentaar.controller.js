@@ -61,22 +61,31 @@ module.exports = {
         });
     },
     updateCommentaar: (req, res) => {
+        const commentaar_id = req.params.commentaar_id;
         const body = req.body;
-        updateCommentaar(body, (err, results) => {
+        getCommentaarById(commentaar_id, (err, results) => {
             if (err) {
                 console.log(err);
                 return;
             }
             if (!results) {
-                return res.json({
+                return res.status(404).json({
                     success: 0,
-                    message: "Er is een fout opgetreden bij het updaten!"
+                    message: "bericht bestaat niet!"
+                });
+            } else {
+                updateCommentaar(body, commentaar_id, (err, results) => {
+                    if (err) {
+                        console.log(err);
+                        return;
+                    }
+
+                    return res.json({
+                        success: 1,
+                        message: "update Succesvol!"
+                    });
                 });
             }
-            return res.json({
-                success: 1,
-                message: "update Succesvol!"
-            });
         });
     },
     deleteCommentaar: (req, res) => {

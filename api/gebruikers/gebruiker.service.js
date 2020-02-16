@@ -46,7 +46,7 @@ module.exports = {
             }
         );
     },
-    updateGebruiker: (data, callBack) => {
+    updateGebruiker: (data, gebruiker_id, callBack) => {
         pool.query('update gebruikers set naam = ?, voornaam = ?, adres = ?, telefoonnummer = ?, email = ?, gebruikernaam = ?, wachtwoord = ?, type_id = ? where gebruiker_id = ?',
             [
                 data.naam,
@@ -57,7 +57,7 @@ module.exports = {
                 data.gebruikernaam,
                 data.wachtwoord,
                 data.type_id,
-                data.gebruiker_id
+                gebruiker_id
             ],
             (error, results, fields) => {
                 if (error) {
