@@ -105,7 +105,7 @@ module.exports = {
                         console.log(err);
                         return;
                     }
-                    return res.status().json({
+                    return res.status(200).json({
                         success: 1,
                         message: "Presentie succesvol verwijderd!"
                     });
