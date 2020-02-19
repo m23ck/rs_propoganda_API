@@ -154,7 +154,8 @@ module.exports = {
                 return res.status(200).json({
                     success: 1,
                     message: "Login Succesvol",
-                    token: jsonToken
+                    token: jsonToken,
+                    gebruiker_id: results.gebruiker_id
                 });
             } else {
                 return res.status(401).json({
