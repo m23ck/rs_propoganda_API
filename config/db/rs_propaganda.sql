@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.8.5
+-- version 4.9.1
 -- https://www.phpmyadmin.net/
 --
--- Host: localhost
--- Generation Time: Jan 29, 2020 at 01:39 PM
--- Server version: 8.0.13-4
--- PHP Version: 7.2.24-0ubuntu0.18.04.2
+-- Host: 127.0.0.1
+-- Generation Time: Feb 19, 2020 at 04:22 PM
+-- Server version: 10.4.8-MariaDB
+-- PHP Version: 7.3.11
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -19,7 +19,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `Dh9H9MsdZg`
+-- Database: `rs_propaganda`
 --
 
 -- --------------------------------------------------------
@@ -30,10 +30,19 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `bericht` (
   `bericht_id` int(11) NOT NULL,
-  `bericht` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `datum` datetime DEFAULT CURRENT_TIMESTAMP,
+  `bericht` text NOT NULL,
+  `datum` datetime DEFAULT current_timestamp(),
   `gebruiker_id` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `bericht`
+--
+
+INSERT INTO `bericht` (`bericht_id`, `bericht`, `datum`, `gebruiker_id`) VALUES
+(1, 'Hallo dit is een bericht', '2020-02-19 11:43:51', 4),
+(2, 'BERICHTT!!!', '2020-02-19 11:53:16', 5),
+(3, 'NIeuw bericht', '2020-02-19 12:05:14', 5);
 
 -- --------------------------------------------------------
 
@@ -46,7 +55,15 @@ CREATE TABLE `commentaar` (
   `commentaar` tinytext NOT NULL,
   `type` tinyint(1) NOT NULL,
   `presentie_id` int(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `commentaar`
+--
+
+INSERT INTO `commentaar` (`commentaar_id`, `commentaar`, `type`, `presentie_id`) VALUES
+(1, 'PUINNNNN', 0, 1),
+(2, 'Heel goede partij hoor.', 1, 1);
 
 -- --------------------------------------------------------
 
@@ -64,15 +81,15 @@ CREATE TABLE `gebruikers` (
   `gebruikernaam` varchar(255) NOT NULL,
   `wachtwoord` varchar(255) NOT NULL,
   `type_id` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `gebruikers`
 --
 
 INSERT INTO `gebruikers` (`gebruiker_id`, `naam`, `voornaam`, `adres`, `telefoonnummer`, `email`, `gebruikernaam`, `wachtwoord`, `type_id`) VALUES
-(2, 'Latchmansing', 'Kenson', 'j Lachmonstraat 43', 8674583, 'kLatch@yahoo.com', 'klatch', '$2b$10$KGbS9HMrBsGWCxRwM0UEnu2Wal//tZVltOgg8u9Zomenvi3HphIGK', 3),
-(3, 'Mack', 'Andojo', 'Mahadew Missierweg 43', 7254402, 'andojomack@gmail.com', 'm23ck', '$2b$10$n04/Gjoqiw9hrSzPh.9zbedGnjKxFhsxPmz0rR/5320xTT/JUj6FK', 3);
+(4, 'test01', 'test01', 'test01straat 43', 7254402, 'test01@memail.com', 'test01', '$2b$10$VMoOuOsXTVx7WncwsK9H2OzcGHQvtFT6WLaTiXSpYPXFC/9hjedva', 4),
+(5, 'Samadhan', 'Shaniel', 'meowstraat 2', 89526465, 'shaniel29samadhan@gmail.com', 'esaniello', '$2b$10$.IUyzGoklGKJsJ9VIycKnu9HKhedre7OZduQlIAcrT7Z7W43OrqAy', 4);
 
 -- --------------------------------------------------------
 
@@ -82,11 +99,19 @@ INSERT INTO `gebruikers` (`gebruiker_id`, `naam`, `voornaam`, `adres`, `telefoon
 
 CREATE TABLE `presentie` (
   `presentie_id` int(11) NOT NULL,
-  `naam` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `voornaam` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-  `email` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `naam` varchar(255) NOT NULL,
+  `voornaam` varchar(255) NOT NULL,
+  `email` varchar(255) NOT NULL,
   `vergader_id` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `presentie`
+--
+
+INSERT INTO `presentie` (`presentie_id`, `naam`, `voornaam`, `email`, `vergader_id`) VALUES
+(1, 'Paules', 'Paula', 'paules@gmail.com', 1),
+(2, 'Pablo', 'Escobar', 'pablo@yahoo.com', 1);
 
 -- --------------------------------------------------------
 
@@ -98,14 +123,18 @@ CREATE TABLE `ressort` (
   `ressort_id` int(11) NOT NULL,
   `ressortnaam` varchar(255) NOT NULL,
   `district` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `ressort`
 --
 
 INSERT INTO `ressort` (`ressort_id`, `ressortnaam`, `district`) VALUES
-(1, 'koewarasan', 'wanica');
+(2, 'Meerzorg', 'Commewijne'),
+(3, 'Koewarasan', 'Wanica'),
+(4, 'Welgedacht A', 'Wanica'),
+(5, 'Houttuin', 'Wanica'),
+(6, 'Blauwgrond', 'Paramaribo');
 
 -- --------------------------------------------------------
 
@@ -115,16 +144,16 @@ INSERT INTO `ressort` (`ressort_id`, `ressortnaam`, `district`) VALUES
 
 CREATE TABLE `type` (
   `type_id` int(11) NOT NULL,
-  `type` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  `type` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `type`
 --
 
 INSERT INTO `type` (`type_id`, `type`) VALUES
-(2, 'Administrator'),
-(3, 'admin');
+(4, 'ADMIN'),
+(5, 'MODERATOR');
 
 -- --------------------------------------------------------
 
@@ -137,7 +166,14 @@ CREATE TABLE `vergadering` (
   `ressort_id` int(11) NOT NULL,
   `datum` date NOT NULL,
   `sprekers` tinytext NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `vergadering`
+--
+
+INSERT INTO `vergadering` (`vergader_id`, `ressort_id`, `datum`, `sprekers`) VALUES
+(1, 6, '2020-02-19', 'Juan de la rosa');
 
 --
 -- Indexes for dumped tables
@@ -199,43 +235,43 @@ ALTER TABLE `vergadering`
 -- AUTO_INCREMENT for table `bericht`
 --
 ALTER TABLE `bericht`
-  MODIFY `bericht_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `bericht_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `commentaar`
 --
 ALTER TABLE `commentaar`
-  MODIFY `commentaar_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `commentaar_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `gebruikers`
 --
 ALTER TABLE `gebruikers`
-  MODIFY `gebruiker_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `gebruiker_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `presentie`
 --
 ALTER TABLE `presentie`
-  MODIFY `presentie_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `presentie_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `ressort`
 --
 ALTER TABLE `ressort`
-  MODIFY `ressort_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `ressort_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `type`
 --
 ALTER TABLE `type`
-  MODIFY `type_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `type_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `vergadering`
 --
 ALTER TABLE `vergadering`
-  MODIFY `vergader_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `vergader_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- Constraints for dumped tables
